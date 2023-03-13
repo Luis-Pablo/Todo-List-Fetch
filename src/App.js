@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 function App() {
   const [input, setInput] = useState("");
   const [tarea, setTarea] = useState([]);
-
+  const [actualizar, setActializar] = ('')
  
   const crear = (user) => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
@@ -22,19 +22,14 @@ function App() {
 
   }
 
-  const obtener = () => {
-    fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+  const obtener = (traerTareas) => {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo")
       .then(res => res.json())
-      .then(data => { setTarea(data) })
+      .then(data => traerTareas(data) )
       .catch(error => console.error(error))    
   }
   
-  const actualizar = (tarea) => {
+  const actualizarTarea = (tarea) => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
       method: 'PUT',
       headers: {
@@ -50,7 +45,7 @@ function App() {
 
 
   const borrar = () => {
-    setTarea([]);
+    setTarea([]);/*
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo",{
         method: 'DELETE',
         headers: {
@@ -59,17 +54,17 @@ function App() {
       })
       .then(res => res.json())
       .then(data => console.log(data))
-      .catch(error => console.log('error', error));
+      .catch(error => console.log('error', error));*/
 
-  }
+  }/*
   useEffect(() => {
-    obtener();
-  })
-
+    obtener(setTarea);
+  }, [])
+*/
 
   const handleChange = (e) => {
     setInput(e.target.value);
-    crear({label:e.target.value, done: false })
+    //crear({label:e.target.value, done: false })
   }
 
   const handleSubmit = (e) => {
@@ -77,7 +72,7 @@ function App() {
     if (input !== "") {
       setTarea(tarea.concat(input));
       setInput('')
-      actualizar(tarea.concat({label: input, done: false}));
+      //actualizar(tarea.concat({label: input, done: false}));
     }
   }
 
@@ -106,8 +101,9 @@ function App() {
       <div className="mt-3">
         <ul>
           {tarea.map((item, index) =>
-            <div className="row input-group mb-3">
+            <div className="row input-group mb-3 ">
               <li className="form-control col-md-6" key={index}>{item} </li>
+              
 
               <button onClick={() => setTarea(tarea.filter(borrar => borrar != item))}
                 className="justify-content-around btn btn-danger col-md-2 "
@@ -132,3 +128,22 @@ function App() {
 }
 
 export default App;
+
+
+/* ver si se puede cambiar para actualizar 
+<input type="text" 
+              key={index} 
+              onSubmit={(e) => {
+                e.preventDefault(); 
+                'click' && actualizar !== item ?
+                  setTarea(tarea[index].concat(actualizar)): 
+                  item }}
+              className="form-control form-control-lg"  
+              placeholder={item} 
+              value={actualizar} 
+              onChange={(e) => {
+                e.preventDefault();
+                setActializar(e.target.value);
+              }}
+              />
+*/
