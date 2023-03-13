@@ -8,25 +8,22 @@ function App() {
   const [input, setInput] = useState("");
   const [tarea, setTarea] = useState([]);
 
-  
-  const crear = () => {
+ 
+  const crear = (user) => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify([])
+      body: JSON.stringify(user)
     }).then(res => res.json())
       .then(data => console.log(data))
       .catch(error => console.log(error));
 
   }
 
-
-
-
   const obtener = () => {
-    fetch("https://assets.breatheco.de/apis/fake/todos/user/", {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -54,8 +51,7 @@ function App() {
 
   const borrar = () => {
     setTarea([]);
-    fetch("https://assets.breatheco.de/apis/fake/todos/user/",
-      {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo",{
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -66,13 +62,14 @@ function App() {
       .catch(error => console.log('error', error));
 
   }
-
   useEffect(() => {
-    obtener()
-  }, []);
+    obtener();
+  })
+
 
   const handleChange = (e) => {
     setInput(e.target.value);
+    crear({label:e.target.value, done: false })
   }
 
   const handleSubmit = (e) => {
@@ -83,9 +80,6 @@ function App() {
       actualizar(tarea.concat({label: input, done: false}));
     }
   }
-
-
-
 
   return (
     <div className="container  justify-content-center my-5">
@@ -132,12 +126,6 @@ function App() {
       <div className='d-flex justify-content-center '>
         <button className='btn btn-danger  ' onClick={borrar}>Borrar todo</button>
       </div>
-
-
-
-
-
-
 
     </div>
   )
