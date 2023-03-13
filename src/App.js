@@ -2,11 +2,73 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
-
+import { useState, useEffect } from 'react'
 
 function App() {
   const [input, setInput] = useState("");
   const [tarea, setTarea] = useState([]);
+
+  
+  const crear = () => {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify([])
+    }).then(res => res.json())
+      .then(data => console.log(data))
+      .catch(error => console.log(error));
+
+  }
+
+
+
+
+  const obtener = () => {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(data => { setTarea(data) })
+      .catch(error => console.error(error))    
+  }
+  
+  const actualizar = (tarea) => {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(tarea)
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(error => console.log('error', error))
+  }
+
+
+
+  const borrar = () => {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/",
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(error => console.log('error', error));
+
+  }
+
+  useEffect(() => {
+    obtener()
+  }, []);
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -22,7 +84,7 @@ function App() {
 
 
 
-  console.log(tarea)
+
   return (
     <div className="container  justify-content-center my-5">
 
@@ -64,6 +126,9 @@ function App() {
 
         </ul>
 
+      </div>
+      <div>
+        <button className='btn btn-danger' onClick={borrar}>Borrar todo</button>
       </div>
 
 
