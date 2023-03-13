@@ -53,6 +53,7 @@ function App() {
 
 
   const borrar = () => {
+    setTarea([]);
     fetch("https://assets.breatheco.de/apis/fake/todos/user/",
       {
         method: 'DELETE',
@@ -79,6 +80,7 @@ function App() {
     if (input !== "") {
       setTarea(tarea.concat(input));
       setInput('')
+      actualizar(tarea.concat({label: input, done: false}));
     }
   }
 
@@ -127,8 +129,8 @@ function App() {
         </ul>
 
       </div>
-      <div>
-        <button className='btn btn-danger' onClick={borrar}>Borrar todo</button>
+      <div className='d-flex justify-content-center '>
+        <button className='btn btn-danger  ' onClick={borrar}>Borrar todo</button>
       </div>
 
 
