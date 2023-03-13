@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 function App() {
   const [input, setInput] = useState("");
   const [tarea, setTarea] = useState([]);
-  const [actualizar, setActializar] = ('')
+  
  
   const crear = (user) => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
@@ -22,12 +22,15 @@ function App() {
 
   }
 
-  const obtener = (traerTareas) => {
+  const obtener = () => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo")
       .then(res => res.json())
-      .then(data => traerTareas(data) )
+      .then(data => setTareas(data) )
       .catch(error => console.error(error))    
   }
+  useEffect(() => {
+    obtener();
+},[])
   
   const actualizarTarea = (tarea) => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
@@ -64,13 +67,14 @@ function App() {
 
   const handleChange = (e) => {
     setInput(e.target.value);
-    //crear({label:e.target.value, done: false })
+    
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input !== "") {
       setTarea(tarea.concat(input));
+      crear({label:tarea, done: false })
       setInput('')
       //actualizar(tarea.concat({label: input, done: false}));
     }
