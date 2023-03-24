@@ -34,14 +34,16 @@ function App() {
 
 
 
-  const del = () => {
-    setTasks([]);
+  const del = (index) => {
+    const newTasks = [...tasks];
+    newTasks.splice(index, 1);
+    setTasks(newTasks);
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo",{
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify([])
+        body: JSON.stringify(newTasks)
       })
       .then(res => res.json())
       .then(data => console.log(data))
@@ -55,11 +57,16 @@ function App() {
     setInput(e.target.value);
     
   }
+  //let writeTask = [...tasks, { label: input, done: false }]
+  //const update = () => {
+    //setTasks([...tasks, { label: input, done: false }]);
+    //updateTasks([...tasks, { label: input, done: false }])
+  //}
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input !== "") {
-      setTasks([...tasks, { label: input, done: false }]);
+      setTasks([...tasks, { label: input, done: false }])
       updateTasks([...tasks, { label: input, done: false }])
       setInput('')
       //actualizar(tarea.concat({label: input, done: false}));
@@ -99,7 +106,7 @@ function App() {
               <li className="form-control col-md-6" key={index}>{item.label} </li>
               
 
-              <button onClick={() => setTasks(tasks.filter(borrar => borrar != item))}
+              <button onClick={del}
                 className="justify-content-around btn btn-danger col-md-2 "
                 type="button">
 
