@@ -57,11 +57,7 @@ function App() {
     setInput(e.target.value);
     
   }
-  //let writeTask = [...tasks, { label: input, done: false }]
-  //const update = () => {
-    //setTasks([...tasks, { label: input, done: false }]);
-    //updateTasks([...tasks, { label: input, done: false }])
-  //}
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,7 +65,7 @@ function App() {
       setTasks([...tasks, { label: input, done: false }])
       updateTasks([...tasks, { label: input, done: false }])
       setInput('')
-      //actualizar(tarea.concat({label: input, done: false}));
+      
     }
   }
 
@@ -131,20 +127,3 @@ function App() {
 export default App;
 
 
-/* ver si se puede cambiar para actualizar 
-<input type="text" 
-              key={index} 
-              onSubmit={(e) => {
-                e.preventDefault(); 
-                'click' && actualizar !== item ?
-                  setTarea(tarea[index].concat(actualizar)): 
-                  item }}
-              className="form-control form-control-lg"  
-              placeholder={item} 
-              value={actualizar} 
-              onChange={(e) => {
-                e.preventDefault();
-                setActializar(e.target.value);
-              }}
-              />
-*/
