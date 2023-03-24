@@ -1,69 +1,55 @@
 
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle';
+
 import { useState, useEffect } from 'react'
 
 function App() {
+
   const [input, setInput] = useState("");
-  const [tarea, setTarea] = useState([]);
+  const [tasks, setTasks] = useState([]);
   
  
-  const crear = (user) => {
+  const updateTasks = (task) => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify(task)
     }).then(res => res.json())
       .then(data => console.log(data))
       .catch(error => console.log(error));
 
   }
 
-  const obtener = () => {
+  const getTask = () => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo")
       .then(res => res.json())
-      .then(data => setTareas(data) )
+      .then(data => setTasks(data) )
       .catch(error => console.error(error))    
   }
-  useEffect(() => {
-    obtener();
-},[])
+
   
-  const actualizarTarea = (tarea) => {
-    fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo", {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(tarea)
-    })
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(error => console.log('error', error))
-  }
 
 
 
-  const borrar = () => {
-    setTarea([]);/*
+
+  const del = () => {
+    setTasks([]);
     fetch("https://assets.breatheco.de/apis/fake/todos/user/luispablo",{
-        method: 'DELETE',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify([])
       })
       .then(res => res.json())
       .then(data => console.log(data))
-      .catch(error => console.log('error', error));*/
+      .catch(error => console.log('error', error));
 
-  }/*
-  useEffect(() => {
-    obtener(setTarea);
-  }, [])
-*/
+  }
+  
+
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -73,12 +59,16 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input !== "") {
-      setTarea(tarea.concat(input));
-      crear({label:tarea, done: false })
+      setTasks([...tasks, { label: input, done: false }]);
+      updateTasks([...tasks, { label: input, done: false }])
       setInput('')
       //actualizar(tarea.concat({label: input, done: false}));
     }
   }
+
+  useEffect(() => {
+    getTask();
+  }, []);
 
   return (
     <div className="container  justify-content-center my-5">
@@ -98,18 +88,18 @@ function App() {
 
       </form >
 
-      <span className="form-text my-2" id="span">Tareas pendientes : {tarea.length}</span>
+      <span className="form-text my-2" id="span">Tareas pendientes : {tasks.length}</span>
 
 
 
       <div className="mt-3">
         <ul>
-          {tarea.map((item, index) =>
+          {tasks.map((item, index) =>
             <div className="row input-group mb-3 ">
-              <li className="form-control col-md-6" key={index}>{item} </li>
+              <li className="form-control col-md-6" key={index}>{item.label} </li>
               
 
-              <button onClick={() => setTarea(tarea.filter(borrar => borrar != item))}
+              <button onClick={() => setTasks(tasks.filter(borrar => borrar != item))}
                 className="justify-content-around btn btn-danger col-md-2 "
                 type="button">
 
@@ -124,7 +114,7 @@ function App() {
 
       </div>
       <div className='d-flex justify-content-center '>
-        <button className='btn btn-danger  ' onClick={borrar}>Borrar todo</button>
+        <button className='btn btn-danger  ' onClick={del}>Borrar todo</button>
       </div>
 
     </div>
